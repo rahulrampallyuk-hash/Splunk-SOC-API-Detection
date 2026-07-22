@@ -1,0 +1,4 @@
+# Detects API5 - Broken Function Level Authorisation
+# Maps to: OWASP API5, NIST CSF 2.0 DE.CM
+
+index="main" "API5-Broken-Function-Auth" | stats count by host | where count > 5
