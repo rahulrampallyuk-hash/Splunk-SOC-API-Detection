@@ -1,0 +1,4 @@
+# Detects API7 - Server-Side Request Forgery (SSRF)
+# Maps to: OWASP API7, NIST CSF 2.0 DE.CM
+
+index="main" "API7-SSRF" | stats count by host | where count > 5
