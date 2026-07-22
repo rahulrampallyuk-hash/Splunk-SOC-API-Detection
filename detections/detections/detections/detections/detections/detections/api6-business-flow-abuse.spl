@@ -1,0 +1,4 @@
+# Detects API6 - Unrestricted Access to Sensitive Business Flows
+# Maps to: OWASP API6, NIST CSF 2.0 DE.CM
+
+index="main" "API6-Business-Flow-Abuse" | stats count by host | where count>5
