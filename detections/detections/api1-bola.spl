@@ -1,0 +1,4 @@
+# Detects API1 - Broken Object Level Authorisation (BOLA)
+# Maps to: OWASP API1, NIST CSF 2.0 DE.CM
+
+index="main" "BOLA" | stats count by host | where count>5
