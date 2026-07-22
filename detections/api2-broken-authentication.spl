@@ -1,0 +1,4 @@
+# Detects API2 - Broken Authentication (brute-force login attempts)
+# Log source: crapi-identity | Maps to: OWASP API2, NIST CSF 2.0 DE.CM
+
+index="main" "Invalid Credentials" | stats count by host | where count > 10
