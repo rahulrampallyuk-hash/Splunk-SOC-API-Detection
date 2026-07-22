@@ -1,0 +1,5 @@
+# Detects API8 - Security Misconfiguration (HTTP method probing)
+# Maps to: OWASP API8, NIST CSF 2.0 DE.CM
+# Note: run as a scheduled alert (1-min cron) — real-time alerting was inconsistent on Splunk Free
+
+index="main" "API8-Security-Misconfig" | stats count by host | where count>5
