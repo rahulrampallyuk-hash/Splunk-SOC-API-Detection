@@ -1,0 +1,4 @@
+# Detects API9 - Improper Inventory Management
+# Maps to: OWASP API9, NIST CSF 2.0 DE.CM
+
+index="main" "API9-Improper-Inventory" | stats count by host | where count > 5
