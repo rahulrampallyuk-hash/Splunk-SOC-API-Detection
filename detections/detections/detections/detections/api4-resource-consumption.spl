@@ -1,0 +1,4 @@
+# Detects API4 - Unrestricted Resource Consumption
+# Maps to: OWASP API4, NIST CSF 2.0 DE.CM
+
+index="main" "API4-Resource-Consumption" | stats count by host | where count > 10
