@@ -1,0 +1,4 @@
+# Detects API3 - Broken Object Property Level Authorisation (Mass Assignment)
+# Maps to: OWASP API3, NIST CSF 2.0 DE.CM
+
+index="main" "API3-Mass-Assignment" | stats count by host | where count >5
