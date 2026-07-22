@@ -1,0 +1,5 @@
+# Detects API10 - Unsafe Consumption of APIs (malicious URL injection)
+# Maps to: OWASP API10, NIST CSF 2.0 DE.CM
+# Note: run as a scheduled alert (1-min cron) — real-time alerting was inconsistent on Splunk Free
+
+index="main" "API10-Unsafe-Consumption" | stats count by host | where count > 5
