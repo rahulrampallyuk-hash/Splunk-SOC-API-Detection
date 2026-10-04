@@ -1,4 +1,10 @@
-# Detects API7 - Server-Side Request Forgery (SSRF)
-# Maps to: OWASP API7, NIST CSF 2.0 DE.CM
-
-index="main" "API7-SSRF" | stats count by host | where count > 5
+# API7 - Server-Side Request Forgery
+# NOT DETECTABLE from web-tier logs as configured. No rule is provided.
+#
+# Tested 24 Sep 2026: a POST supplying http://169.254.169.254/latest/meta-data/
+# as mechanic_api returned HTTP 504 after the outbound fetch timed out.
+# No entry appeared in the crapi-web access log or error log.
+#
+# The crapi-workshop container log recorded the supplied URL in full at INFO
+# level. Detection is therefore possible at the application tier, but
+# requires ingesting container logs, which was outside this pipeline.
