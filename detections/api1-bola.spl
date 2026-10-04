@@ -1,4 +1,13 @@
-# Detects API1 - Broken Object Level Authorisation (BOLA)
-# Maps to: OWASP API1, NIST CSF 2.0 DE.CM
+# API1 - Broken Object Level Authorisation
+# Detects enumeration of object identifiers by distinct-value cardinality.
+# Maps to OWASP API1, NIST CSF 2.0 DE.CM
+#
+# Validated 19 Sep 2026: detected 29 distinct vehicle IDs in one minute.
+# Benign control of 50 requests to a single ID did not trigger the rule.
+# Known limitation: a single unauthorised access produces a cardinality of 1
+# and is not detected.
 
-index="main" "BOLA" | stats count by host | where count>5
+index=main sourcetype=access_combined uri_path="/identity/api/v2/vehicle/*/location"
+| bin _time span=1m
+| stats count AS total, dc(uri_path) AS distinct_vehicles BY clientip, _time
+| where distinct_vehicles > 5
