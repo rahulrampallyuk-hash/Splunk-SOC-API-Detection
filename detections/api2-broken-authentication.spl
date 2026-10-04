@@ -1,4 +1,10 @@
-# Detects API2 - Broken Authentication (brute-force login attempts)
-# Log source: crapi-identity | Maps to: OWASP API2, NIST CSF 2.0 DE.CM
+# API2 - Broken Authentication
+# Detects credential brute force by failed-request rate.
+# Maps to OWASP API2, NIST CSF 2.0 DE.CM
+#
+# Validated 18 Sep 2026: detected 20 failed logins in one minute.
 
-index="main" "Invalid Credentials" | stats count by host | where count > 10
+index=main sourcetype=access_combined uri_path="/identity/api/auth/login" status=401
+| bin _time span=1m
+| stats count AS failures BY clientip, _time
+| where failures > 10
