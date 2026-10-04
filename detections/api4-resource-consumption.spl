@@ -1,4 +1,12 @@
-# Detects API4 - Unrestricted Resource Consumption
-# Maps to: OWASP API4, NIST CSF 2.0 DE.CM
+# API4 - Unrestricted Resource Consumption
+# Detects OTP brute force by request rate.
+# Maps to OWASP API4, NIST CSF 2.0 DE.CM
+#
+# Validated 19 Sep 2026: detected runs of 51 and 50 OTP guesses.
+# Note: crAPI returns HTTP 500 rather than 401 for an incorrect OTP.
+# A 503 was observed at 51 requests per minute, indicating no rate limiting.
 
-index="main" "API4-Resource-Consumption" | stats count by host | where count > 10
+index=main sourcetype=access_combined uri_path="/identity/api/auth/v3/check-otp" status=500
+| bin _time span=1m
+| stats count AS failures BY clientip, _time
+| where failures > 10
