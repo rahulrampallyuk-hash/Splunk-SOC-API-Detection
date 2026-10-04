@@ -1,0 +1,2 @@
+clientip,"uri_path",status,count
+"172.18.0.1","/identity/api/auth/v2/check-otp",500,10
