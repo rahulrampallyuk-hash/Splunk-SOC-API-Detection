@@ -1,5 +1,10 @@
-# Detects API10 - Unsafe Consumption of APIs (malicious URL injection)
-# Maps to: OWASP API10, NIST CSF 2.0 DE.CM
-# Note: run as a scheduled alert (1-min cron) — real-time alerting was inconsistent on Splunk Free
-
-index="main" "API10-Unsafe-Consumption" | stats count by host | where count > 5
+# API10 - Unsafe Consumption of APIs
+# NOT DETECTABLE from web-tier logs as configured. No rule is provided.
+#
+# Tested 24 Sep 2026: a POST supplying a reachable URL as mechanic_api with
+# repeat_request_if_failed enabled returned HTTP 200. No entry appeared in
+# the crapi-web access log.
+#
+# The crapi-workshop log recorded the supplied URL, rewritten to the internal
+# address http://crapi-workshop:8000/workshop/api/mechanic/, and the repeat
+# count. As with API7, detection requires application-tier log ingestion.
