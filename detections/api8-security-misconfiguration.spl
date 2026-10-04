@@ -1,5 +1,18 @@
-# Detects API8 - Security Misconfiguration (HTTP method probing)
-# Maps to: OWASP API8, NIST CSF 2.0 DE.CM
-# Note: run as a scheduled alert (1-min cron) — real-time alerting was inconsistent on Splunk Free
+# API8 - Security Misconfiguration
+# Two rules: exposed file by path match, and path probing by cardinality.
+# Maps to OWASP API8, NIST CSF 2.0 DE.CM
+#
+# Validated 24 Sep 2026: /.env returned HTTP 200 serving database credentials.
+# Six further probe paths returned 404 and were caught by the cardinality rule.
+# Note: the cardinality rule also matches object enumeration (API1), since
+# both produce one source requesting many non-existent resources.
 
-index="main" "API8-Security-Misconfig" | stats count by host | where count>5
+# Exposed configuration file
+index=main sourcetype=access_combined uri_path="/.env"
+| stats count BY clientip, status, _time
+
+# Path probing
+index=main sourcetype=access_combined status=404
+| bin _time span=1m
+| stats dc(uri_path) AS probed_paths BY clientip, _time
+| where probed_paths > 5
