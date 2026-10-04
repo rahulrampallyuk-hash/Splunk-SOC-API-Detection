@@ -1,4 +1,11 @@
-# Detects API5 - Broken Function Level Authorisation
-# Maps to: OWASP API5, NIST CSF 2.0 DE.CM
+# API5 - Broken Function Level Authorisation
+# Detects access to an administrative endpoint by path match.
+# Maps to OWASP API5, NIST CSF 2.0 DE.CM
+#
+# Validated 19 Sep 2026: a standard user token returned HTTP 200.
+# Known limitation: the access log records client IP, not authenticated
+# identity, so this rule cannot distinguish legitimate administrative use
+# from privilege escalation.
 
-index="main" "API5-Broken-Function-Auth" | stats count by host | where count > 5
+index=main sourcetype=access_combined uri_path="/workshop/api/shop/orders/all"
+| stats count BY clientip, _time
