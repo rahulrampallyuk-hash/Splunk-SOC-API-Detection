@@ -1,4 +1,14 @@
-# Detects API3 - Broken Object Property Level Authorisation (Mass Assignment)
-# Maps to: OWASP API3, NIST CSF 2.0 DE.CM
-
-index="main" "API3-Mass-Assignment" | stats count by host | where count >5
+# API3 - Broken Object Property Level Authorisation (Mass Assignment)
+# NOT DETECTABLE at the web tier. No rule is provided.
+#
+# Tested 19 Sep 2026: 29 PUT requests to /identity/api/v2/user/email with
+# role and isAdmin injected into the request body. All 29 produced access log
+# entries identical in path, method, status and response size.
+#
+# The injected fields exist only in the request body, which nginx does not
+# log. crapi-identity's configured log level records no request detail.
+# No field at either tier distinguishes this attack from any other rejected
+# request to the same endpoint.
+#
+# Detection would require application-tier logging of request properties,
+# or $request_body in the nginx log_format, which carries a privacy cost.
